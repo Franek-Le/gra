@@ -74,7 +74,7 @@ button?.addEventListener("click", async () => {
     });
 
     game.onGameStart.subscribe(() => {
-        setView(app, GameView);
+        setView(app!, GameView);
 
         const scan = document.querySelector<HTMLDivElement>("#scan");
 
@@ -86,7 +86,7 @@ button?.addEventListener("click", async () => {
     /*
     console.log("kurwa")
     game.onGameEnd.subscribe((winner: string) => {
-        setView(app, GameEndView);
+        setView(app!, GameEndView);
 
         const winnerDiv = document.querySelector<HTMLDivElement>("#winner");
 
@@ -100,7 +100,7 @@ button?.addEventListener("click", async () => {
     if (!success) return;
 
     if (username === "Franek") {
-        setView(app, AdminLobbyView);
+        setView(app!, AdminLobbyView);
 
         const start = document.querySelector<HTMLButtonElement>("#start");
 
@@ -108,7 +108,7 @@ button?.addEventListener("click", async () => {
             game?.startGame();
         });
     } else {
-        setView(app, LobbyView);
+        setView(app!, LobbyView);
     }
 });
 
