@@ -61,12 +61,12 @@ export class Game {
         this.client.send(packet);
     }
 
-    public scan(): void {
+    public async scan(): Promise<void> {
         if (this.scanner === undefined) {
             this.scanner = new Scanner();
         }
 
-        const result: string = this.scanner.scan();
+        const result: string = await this.scanner.scan();
 
         if (result === "") {
             return;

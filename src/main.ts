@@ -78,8 +78,8 @@ button?.addEventListener("click", async () => {
 
         const scan = document.querySelector<HTMLDivElement>("#scan");
 
-        scan?.addEventListener("click", () => {
-            game?.scan();
+        scan?.addEventListener("click", async () => {
+            await game?.scan();
         });
     });
 
