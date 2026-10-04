@@ -15,7 +15,7 @@ export class Player {
         this.client = client;
     }
 
-    public async connect(): Promise<[boolean, string]> {
+    public async connect(): Promise<[boolean, string, Array<string>]> {
         await this.client.waitUntilOpen();
 
         const packet = this.packetManager.createPacket(u8(0x00), {
@@ -30,10 +30,10 @@ export class Player {
         const resultPacketData = resultPacket.payload as GameConnectResultServerPacketData;
 
         if (!resultPacketData.success) {
-            return [false, "Failed to join game."];
+            return [false, resultPacketData.message, []];
         }
 
-        return [true, "Successfully joined."];
+        return [true, resultPacketData.message, resultPacketData.players];
     }
 
     public disconnect(): void {

@@ -1,5 +1,6 @@
 import { Game } from "./game/game.ts";
 import { AdminLobbyView, GameEndView, GameView, LobbyView, setView } from "./view/view.ts";
+import type { u8 } from "./types/integers.ts";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 const button = document.querySelector<HTMLButtonElement>("#join");
@@ -39,6 +40,18 @@ const clearError = () => {
     error.textContent = "";
     error.style.display = "none";
 };
+
+const updatePlayerList = (players: Array<string>) => {
+    const playerList = document.querySelector<HTMLDivElement>("#player-list");
+
+    if (playerList) {
+        playerList.innerHTML = players.map(player => `
+        <div class="player">
+            <span class="player-name">${player}</span>
+        </div>
+    `).join("");
+    }
+}
 
 const getUsername = () => input?.value.trim() ?? "";
 
@@ -83,15 +96,30 @@ button?.addEventListener("click", async () => {
         });
     });
 
-    game.onGameEnd.subscribe((winner: string) => {
+    game.onGameEnd.subscribe((leaderboard: Map<string, u8>) => {
         setView(app!, GameEndView);
 
-        const winnerDiv = document.querySelector<HTMLDivElement>("#winner");
+        const leaderboardDiv = document.getElementById("leaderboard");
 
-        if (winnerDiv) {
-            winnerDiv.textContent = `Wygrywa ${winner}.`;
+        if (!leaderboardDiv) {
+            return;
         }
+
+        leaderboardDiv.innerHTML = Array.from(leaderboard.entries())
+            .sort((a, b) => b[1] - a[1])
+            .map(([username, score], index) => `
+            <div class="player">
+                <span class="player-rank">${index + 1}.</span>
+                <span class="player-name">${username}</span>
+                <span class="player-points">${score} pkt</span>
+            </div>
+        `)
+            .join("");
     });
+
+    game.onPlayerListUpdate.subscribe((players: Array<string>) => {
+        updatePlayerList(players)
+    })
 
     const success = await game.connect();
 
@@ -108,6 +136,8 @@ button?.addEventListener("click", async () => {
     } else {
         setView(app!, LobbyView);
     }
+
+    updatePlayerList(game.players);
 });
 
 window.addEventListener("pagehide", () => {

@@ -1,5 +1,3 @@
-
-
 export type View = {
     body: string
 }
@@ -19,6 +17,7 @@ export const LobbyView = {
     body: `
     <div class="card" id="main">
         <div class="title">Lobby</div>
+        <div class="player-list" id="player-list"></div>
     </div>
     `
 } as View;
@@ -27,10 +26,11 @@ export const AdminLobbyView = {
     body: `
     <div class="card" id="main">
         <div class="title">Lobby</div>
+        <div class="player-list" id="player-list"></div>
         <button id="start" class="button">Start</button>
     </div>
     `
-}
+} as View;
 
 export const GameView = {
     body: `
@@ -40,16 +40,16 @@ export const GameView = {
         <button id="scan" class="button">Skanuj</button>
     </div>
     `
-}
+} as View;
 
 export const GameEndView = {
     body: `
     <div class="card" id="main">
         <div class="title">Koniec Gry</div>
-        <div class="text" id="winner"></div>
+        <div class="leaderboard" id="leaderboard"></div>
     </div>
     `
-}
+} as View;
 
 export function setView(app: HTMLDivElement, view: View) {
     app.innerHTML = view.body;

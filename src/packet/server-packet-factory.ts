@@ -40,14 +40,20 @@ export class ServerPacketFactory {
 
             case 0x01:
                 return {
-                    winner: buffer.readString()
+                    leaderboard: buffer.readStringU8Map(),
                 } as GameEndServerPacketData;
 
             case 0x02:
                 return {
                     success: buffer.readBoolean(),
                     message: buffer.readString(),
+                    players: buffer.readStringArray(),
                 } as GameConnectResultServerPacketData
+
+            case 0x03:
+                return {
+                    players: buffer.readStringArray(),
+                }
         }
 
         return {};

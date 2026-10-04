@@ -177,6 +177,47 @@ export class Buffer {
         return value !== 0;
     }
 
+    public writeStringArray(value: Array<string>): void {
+        this.writeU32(u32(value.length));
+
+        for (const item of value) {
+            this.writeString(item);
+        }
+    }
+
+    public readStringArray(): Array<string> {
+        const length = this.readU32();
+        const value = new Array<string>(length);
+
+        for (let i = 0; i < length; i++) {
+            value[i] = this.readString();
+        }
+
+        return value;
+    }
+
+    public writeStringU8Map(value: Map<string, u8>): void {
+        this.writeU32(u32(value.size));
+
+        for (const [key, item] of value) {
+            this.writeString(key);
+            this.writeU8(item);
+        }
+    }
+
+    public readStringU8Map(): Map<string, u8> {
+        const length = this.readU32();
+        const value = new Map<string, u8>();
+
+        for (let i = 0; i < length; i++) {
+            const key = this.readString();
+            const item = this.readU8();
+            value.set(key, item);
+        }
+
+        return value;
+    }
+
     public toUint8Array(): Uint8Array {
         return new Uint8Array(this.data, 0, this.offset);
     }

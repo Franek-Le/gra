@@ -144,6 +144,59 @@ button:focus-visible {
     0 8px 24px rgb(67 3 166 / 25%);
 }
 
+.player-list,
+.leaderboard {
+  width: min(100%, 28em);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-top-color: var(--border-light);
+  border-radius: 10px;
+  background: var(--bg-dark);
+}
+
+.player-name {
+  font-weight: 500;
+}
+
+.player-points {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.leaderboard {
+  gap: 10px;
+}
+
+.leaderboard .player {
+  padding: 16px 18px;
+}
+
+.leaderboard .player:first-child {
+  border-color: var(--accent);
+  box-shadow: 0 0 16px rgb(126 59 237 / 12%);
+}
+
+.player-rank {
+  width: 2em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.leaderboard .player-name {
+  flex: 1;
+  margin-left: 8px;
+}
+
 @keyframes error-in {
   from {
     opacity: 0;

@@ -3,15 +3,20 @@ import type {u16, u32, u8} from "../types/integers.js";
 export type GameStartServerPacketData = {};
 
 export type GameEndServerPacketData = {
-    winner: string,
+    leaderboard: Map<string, u8>,
 }
 
 export type GameConnectResultServerPacketData = {
     success: boolean,
     message: string,
+    players: Array<string>
 }
 
-export type ServerPacketData = GameStartServerPacketData | GameEndServerPacketData | GameConnectResultServerPacketData;
+export type GamePlayerListUpdateServerPacketData = {
+    players: Array<string>
+}
+
+export type ServerPacketData = GameStartServerPacketData | GameEndServerPacketData | GameConnectResultServerPacketData | GamePlayerListUpdateServerPacketData;
 
 export type ServerPacket = {
     version: u8;

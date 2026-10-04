@@ -14,7 +14,10 @@ export class Game {
 
     public readonly onError: EventHandler<string>;
     public readonly onGameStart: EventHandler<{}>;
-    public readonly onGameEnd: EventHandler<string>;
+    public readonly onGameEnd: EventHandler<Map<string, u8>>;
+    public readonly onPlayerListUpdate: EventHandler<Array<string>>;
+
+    public players: Array<string>;
 
     public isConnected: boolean;
 
@@ -26,19 +29,24 @@ export class Game {
 
         this.onError = new EventHandler<string>();
         this.onGameStart = new EventHandler<{}>();
-        this.onGameEnd = new EventHandler<string>();
+        this.onGameEnd = new EventHandler<Map<string, u8>>();
+        this.onPlayerListUpdate = new EventHandler<Array<string>>();
+
+        this.players = [];
 
         this.isConnected = false;
     }
 
     public async connect(): Promise<boolean> {
         try {
-            const [success, message] = await this.player.connect();
+            const [success, message, players] = await this.player.connect();
 
             if (!success) {
                 this.onError.invoke(message);
                 return false;
             }
+
+            this.players = players;
 
             this.isConnected = true;
             return true;
