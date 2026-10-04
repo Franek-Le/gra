@@ -7,16 +7,18 @@ export class Scanner {
         this.scanner = new Html5QrcodeScanner("qr-reader", {
             fps: 10,
             qrbox: { width: 250, height: 250 },
-        }, false)
+            rememberLastUsedCamera: true,
+            showTorchButtonIfSupported: true,
+        }, false);
     }
 
-    public scan(): string {
-        this.scanner.render((decodedText) => {
-            return decodedText;
-        }, () => {
-
-        })
-
-        return "";
+    public scan(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.scanner.render((decodedText) => {
+                this.scanner.clear().then(() => resolve(decodedText)).catch(reject);
+            }, (errorMessage) => {
+                console.debug("QR scan failed:", errorMessage);
+            });
+        });
     }
 }
