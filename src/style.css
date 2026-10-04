@@ -222,3 +222,141 @@ button:focus-visible {
     font-size: 24pt;
   }
 }
+
+#qr-reader {
+  position: relative;
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  background: #000;
+  box-shadow:
+          0 20px 50px rgb(0 0 0 / 45%),
+          0 0 0 1px rgb(255 255 255 / 3%);
+}
+
+#qr-reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+#qr-reader__dashboard,
+#qr-reader__status_span {
+  display: none !important;
+}
+
+.scanner-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: radial-gradient(
+          circle at center,
+          transparent 28%,
+          rgb(0 0 0 / 30%) 70%
+  );
+}
+
+.scanner-frame {
+  position: relative;
+  width: min(68%, 270px);
+  aspect-ratio: 1;
+}
+
+.scanner-frame span {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-color: var(--accent-light);
+  border-style: solid;
+  filter: drop-shadow(0 0 8px rgb(126 59 237 / 60%));
+}
+
+.scanner-frame span:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-width: 3px 0 0 3px;
+  border-radius: 8px 0 0;
+}
+
+.scanner-frame span:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-width: 3px 3px 0 0;
+  border-radius: 0 8px 0 0;
+}
+
+.scanner-frame span:nth-child(3) {
+  right: 0;
+  bottom: 0;
+  border-width: 0 3px 3px 0;
+  border-radius: 0 0 8px;
+}
+
+.scanner-frame span:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 3px 3px;
+  border-radius: 0 0 0 8px;
+}
+
+.scanner-frame::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 4%;
+  width: 92%;
+  height: 2px;
+  background: var(--accent-light);
+  box-shadow: 0 0 12px var(--accent-light);
+  animation: scanner-line 2.2s ease-in-out infinite;
+}
+
+.scanner-overlay p {
+  margin: 24px 0 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 55%);
+  color: rgb(255 255 255 / 80%);
+  font-size: 13px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes scanner-line {
+  0%,
+  100% {
+    top: 8%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  50% {
+    top: 88%;
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  #qr-reader {
+    width: min(100%, 360px);
+    border-radius: 18px;
+  }
+
+  .card {
+    gap: 20px;
+  }
+}

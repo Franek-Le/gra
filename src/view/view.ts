@@ -36,7 +36,16 @@ export const GameView = {
     body: `
     <div class="card" id="main">
         <div class="title">Gra</div>
-        <div id="qr-reader"></div>
+        <div id="qr-reader">
+            <div class="scanner-overlay">
+                <div class="scanner-frame">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
         <button id="scan" class="button">Skanuj</button>
     </div>
     `
