@@ -247,35 +247,25 @@ button:focus-visible {
   display: none !important;
 }
 
-.scanner-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  background: radial-gradient(
-          circle at center,
-          transparent 28%,
-          rgb(0 0 0 / 30%) 70%
-  );
-}
-
-.scanner-frame {
-  position: relative;
-  width: min(68%, 270px);
-  aspect-ratio: 1;
-}
+ .scanner-frame {
+   position: relative;
+   width: min(68%, 270px);
+   aspect-ratio: 1;
+ }
 
 .scanner-frame span {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  border-color: var(--accent-light);
-  border-style: solid;
-  filter: drop-shadow(0 0 8px rgb(126 59 237 / 60%));
+  display: none;
+}
+
+.scanner-overlay p {
+  margin: 24px 0 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 55%);
+  color: rgb(255 255 255 / 80%);
+  font-size: 13px;
+  text-align: center;
+  backdrop-filter: blur(8px);
 }
 
 .scanner-frame span:nth-child(1) {
