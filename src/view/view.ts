@@ -7,10 +7,10 @@ export type View = {
 export const BaseView = {
     body: `
     <div class="card" id="main">
-        <div class="title">Stealth Game</div>
-        <input type="text" class="input" id="username-input" placeholder="username">
+        <div class="title">Gra</div>
+        <input type="text" class="input" id="username-input" placeholder="nazwa gracza">
         <div class="error" id="error"></div>
-        <button id="join" class="button">Join</button>
+        <button id="join" class="button">Dołącz</button>
     </div>
     `
 } as View;
@@ -35,9 +35,9 @@ export const AdminLobbyView = {
 export const GameView = {
     body: `
     <div class="card" id="main">
-        <div class="title">Game</div>
+        <div class="title">Gra</div>
         <div id="qr-reader"></div>
-        <button id="scan" class="button">Scan</button>
+        <button id="scan" class="button">Skanuj</button>
     </div>
     `
 }
@@ -45,7 +45,7 @@ export const GameView = {
 export const GameEndView = {
     body: `
     <div class="card" id="main">
-        <div class="title">Game End</div>
+        <div class="title">Koniec Gry</div>
         <div class="text" id="winner"></div>
     </div>
     `

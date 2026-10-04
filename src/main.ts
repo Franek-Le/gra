@@ -89,7 +89,7 @@ button?.addEventListener("click", async () => {
         const winnerDiv = document.querySelector<HTMLDivElement>("#winner");
 
         if (winnerDiv) {
-            winnerDiv.textContent = winner;
+            winnerDiv.textContent = `Wygrywa ${winner}.`;
         }
     });
 
