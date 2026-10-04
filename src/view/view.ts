@@ -8,7 +8,7 @@ export const BaseView = {
     body: `
     <div class="card" id="main">
         <div class="title">Gra</div>
-        <input type="text" class="input" id="username-input" placeholder="nazwa gracza">
+        <input type="text" class="input" id="username-input" placeholder="Nazwa gracza">
         <div class="error" id="error"></div>
         <button id="join" class="button">Dołącz</button>
     </div>
