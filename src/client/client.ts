@@ -8,7 +8,7 @@ export class Client extends EventTarget {
     public constructor() {
         super();
 
-        this.socket = new WebSocket("ws://noncoagulative-nonabusively-anitra.ngrok-free.dev:55000");
+        this.socket = new WebSocket("wss://noncoagulative-nonabusively-anitra.ngrok-free.dev:55000");
         this.socket.binaryType = "arraybuffer";
 
         //@ts-ignore
