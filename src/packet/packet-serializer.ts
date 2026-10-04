@@ -1,4 +1,4 @@
-import type { Packet, PacketData, ConnectPacketData, MovementPacketData } from "./packet.ts";
+import type { Packet, PacketData, ConnectPacketData, ScanPacketData } from "./packet.ts";
 import { i32, type u8 } from "../types/integers.js";
 import { Buffer } from "../buffer/buffer.js";
 
@@ -28,13 +28,12 @@ export class PacketSerializer {
                 break;
 
             case 0x02:
-                const movementPacketData: MovementPacketData = payload as MovementPacketData;
+                break;
 
-                buffer.writeU32(movementPacketData.tick);
-                buffer.writeI32(movementPacketData.lat);
-                buffer.writeI32(movementPacketData.lon);
-                buffer.writeU8(movementPacketData.accuracy);
-                buffer.writeU16(movementPacketData.speed);
+            case 0x03:
+                const scanPacketData: ScanPacketData = payload as ScanPacketData;
+
+                buffer.writeString(scanPacketData.data);
 
                 break;
         }
