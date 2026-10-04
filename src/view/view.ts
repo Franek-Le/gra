@@ -46,7 +46,7 @@ export const GameEndView = {
     body: `
     <div class="card" id="main">
         <div class="title">Game End</div>
-        <button id="scan" class="button">Exit</button>
+        <div class="text" id="winner"></div>
     </div>
     `
 }

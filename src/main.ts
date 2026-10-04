@@ -1,5 +1,5 @@
 import { Game } from "./game/game.ts";
-import { AdminLobbyView, GameView, LobbyView, setView } from "./view/view.ts";
+import { AdminLobbyView, GameEndView, GameView, LobbyView, setView } from "./view/view.ts";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 const button = document.querySelector<HTMLButtonElement>("#join");
@@ -83,8 +83,6 @@ button?.addEventListener("click", async () => {
         });
     });
 
-    /*
-    console.log("kurwa")
     game.onGameEnd.subscribe((winner: string) => {
         setView(app!, GameEndView);
 
@@ -93,7 +91,7 @@ button?.addEventListener("click", async () => {
         if (winnerDiv) {
             winnerDiv.textContent = winner;
         }
-    });*/
+    });
 
     const success = await game.connect();
 
