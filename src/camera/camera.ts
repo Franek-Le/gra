@@ -199,7 +199,7 @@ export class CameraCapture {
             canvas.toBlob(
                 blob => blob ? resolve(blob) : reject(new Error("JPEG encoding failed.")),
                 "image/jpeg",
-                1.0
+                0.85
             );
         });
     }
