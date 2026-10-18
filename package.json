@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "html5-qrcode": "^2.3.8",
-    "object-sizeof": "^2.6.5",
-    "vite-plugin-mkcert": "^2.1.0"
+    "object-sizeof": "^2.6.5"
   }
 }
