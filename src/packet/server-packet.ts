@@ -16,7 +16,11 @@ export type GamePlayerListUpdateServerPacketData = {
     players: Array<string>
 }
 
-export type ServerPacketData = GameStartServerPacketData | GameEndServerPacketData | GameConnectResultServerPacketData | GamePlayerListUpdateServerPacketData;
+export type GameImageScanResultPacketData = {
+    success: boolean
+}
+
+export type ServerPacketData = GameStartServerPacketData | GameEndServerPacketData | GameConnectResultServerPacketData | GamePlayerListUpdateServerPacketData | GameImageScanResultPacketData;
 
 export type ServerPacket = {
     version: u8;

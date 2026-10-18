@@ -16,11 +16,11 @@ export type DisconnectPacketData = {};
 
 export type StartPacketData = {};
 
-export type ScanPacketData = {
-    data: string,
+export type ImagePacketData = {
+    data: Uint8Array,
 };
 
-export type PacketData = ConnectPacketData | DisconnectPacketData | StartPacketData | ScanPacketData;
+export type PacketData = ConnectPacketData | DisconnectPacketData | StartPacketData | ImagePacketData;
 
 export type Packet = {
     version: u8;

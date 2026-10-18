@@ -1,5 +1,10 @@
 import type { Client } from "../client/client.ts";
-import type { GameEndServerPacketData, GamePlayerListUpdateServerPacketData, ServerPacket } from "./server-packet.ts";
+import type {
+    GameEndServerPacketData,
+    GameImageScanResultPacketData,
+    GamePlayerListUpdateServerPacketData,
+    ServerPacket
+} from "./server-packet.ts";
 import type { Packet, PacketData } from "./packet.ts";
 import type { u8 } from "../types/integers.ts";
 import { EventHandler } from "../event/event-handler.ts";
@@ -44,13 +49,17 @@ export class PacketManager {
 
             case 0x02:
                 // intentionally not handled here
-                // actually if I use the Game class then I could add a boolean that this would set to true and then the join handler would finish.
                 break;
 
             case 0x03:
                 const gamePlayerListUpdateServerPacketData = packet.payload as GamePlayerListUpdateServerPacketData;
                 this.game.onPlayerListUpdate.invoke(gamePlayerListUpdateServerPacketData.players);
                 this.game.players = gamePlayerListUpdateServerPacketData.players;
+                break;
+
+            case 0x04:
+                const gameImageScanResultPacketData: GameImageScanResultPacketData = packet.payload as GameImageScanResultPacketData
+                this.game.onImageResult.invoke(gameImageScanResultPacketData.success);
                 break;
         }
     }

@@ -16,6 +16,7 @@ export class Game {
     public readonly onGameStart: EventHandler<{}>;
     public readonly onGameEnd: EventHandler<Map<string, u8>>;
     public readonly onPlayerListUpdate: EventHandler<Array<string>>;
+    public readonly onImageResult: EventHandler<boolean>;
 
     public players: Array<string>;
 
@@ -31,6 +32,7 @@ export class Game {
         this.onGameStart = new EventHandler<{}>();
         this.onGameEnd = new EventHandler<Map<string, u8>>();
         this.onPlayerListUpdate = new EventHandler<Array<string>>();
+        this.onImageResult = new EventHandler<boolean>();
 
         this.players = [];
 
@@ -87,4 +89,11 @@ export class Game {
         this.client.send(packet);
     }
 
+    public async sendImage(blob: Blob): Promise<void> {
+        const packet: Packet = this.packetManager.createPacket(u8(0x03), {
+            data: new Uint8Array(await blob.arrayBuffer())
+        })
+
+        this.client.send(packet);
+    }
 }

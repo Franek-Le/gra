@@ -54,6 +54,11 @@ export class ServerPacketFactory {
                 return {
                     players: buffer.readStringArray(),
                 }
+
+            case 0x04:
+                return {
+                    success: buffer.readBoolean()
+                }
         }
 
         return {};

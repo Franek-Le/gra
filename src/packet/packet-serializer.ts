@@ -1,4 +1,4 @@
-import type { Packet, PacketData, ConnectPacketData, ScanPacketData } from "./packet.ts";
+import type { Packet, PacketData, ConnectPacketData, ImagePacketData } from "./packet.ts";
 import { i32, type u8 } from "../types/integers.js";
 import { Buffer } from "../buffer/buffer.js";
 
@@ -19,9 +19,7 @@ export class PacketSerializer {
         switch (type) {
             case 0x00:
                 const connectPacketData: ConnectPacketData = payload as ConnectPacketData;
-
                 buffer.writeString(connectPacketData.username);
-
                 break;
 
             case 0x01:
@@ -31,10 +29,8 @@ export class PacketSerializer {
                 break;
 
             case 0x03:
-                const scanPacketData: ScanPacketData = payload as ScanPacketData;
-
-                buffer.writeString(scanPacketData.data);
-
+                const imagePacketData: ImagePacketData = payload as ImagePacketData;
+                buffer.writeImage(imagePacketData.data);
                 break;
         }
     }

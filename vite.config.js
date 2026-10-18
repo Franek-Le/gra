@@ -1,5 +1,8 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from "vite";
+import mkcert from "vite-plugin-mkcert";
 
 export default defineConfig({
-    base: '/gra/'
-})
+    plugins: [mkcert({ hosts: ["192.168.0.106"] })],
+    server: { host: "0.0.0.0", https: true },
+    base: "/gra/"
+});

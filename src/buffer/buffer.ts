@@ -218,6 +218,17 @@ export class Buffer {
         return value;
     }
 
+    public writeImage(bytes: Uint8Array): void {
+        const length = i32(bytes.byteLength);
+        this.writeI32(length)
+        this.writeBytes(bytes)
+    }
+
+    public readImage(): Uint8Array {
+        const length = this.readI32();
+        return this.readBytes(length)
+    }
+
     public toUint8Array(): Uint8Array {
         return new Uint8Array(this.data, 0, this.offset);
     }

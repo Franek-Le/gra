@@ -1,5 +1,7 @@
 import { Game } from "./game/game.ts";
+import  { CameraCapture } from "./camera/camera.ts";
 import { AdminLobbyView, GameEndView, GameView, LobbyView, setView } from "./view/view.ts";
+import { notify } from "./notification/notification.ts";
 import type { u8 } from "./types/integers.ts";
 
 const app = document.querySelector<HTMLDivElement>("#app");
@@ -8,6 +10,7 @@ const input = document.querySelector<HTMLInputElement>("#username-input");
 const error = document.querySelector<HTMLDivElement>("#error");
 
 let game: Game | undefined;
+let cameraCapture: CameraCapture | undefined;
 let wakeLock: WakeLockSentinel | undefined;
 
 const keepScreenOn = async () => {
@@ -86,13 +89,19 @@ button?.addEventListener("click", async () => {
         setError(message);
     });
 
-    game.onGameStart.subscribe(() => {
+    game.onGameStart.subscribe(async () => {
         setView(app!, GameView);
 
-        const scan = document.querySelector<HTMLDivElement>("#scan");
+        const takePhoto = document.querySelector<HTMLButtonElement>("#takePhoto");
+        const preview = document.querySelector<HTMLVideoElement>("#preview")
 
-        scan?.addEventListener("click", async () => {
-            await game?.scan();
+        cameraCapture = new CameraCapture(preview, takePhoto);
+
+        await cameraCapture.start();
+
+        takePhoto?.addEventListener("click", async () => {
+            const blob: Blob = await cameraCapture.takePhoto();
+            await game?.sendImage(blob);
         });
     });
 
@@ -119,6 +128,14 @@ button?.addEventListener("click", async () => {
 
     game.onPlayerListUpdate.subscribe((players: Array<string>) => {
         updatePlayerList(players)
+    })
+
+    game.onImageResult.subscribe((success: boolean) => {
+        if (success) {
+            notify("+2 punkty", "success", 5000)
+        } else {
+            notify("Nie znaleziono gracza na zdjęciu", "error", 5000)
+        }
     })
 
     const success = await game.connect();
