@@ -95,12 +95,16 @@ button?.addEventListener("click", async () => {
         const takePhoto = document.querySelector<HTMLButtonElement>("#takePhoto");
         const preview = document.querySelector<HTMLVideoElement>("#preview")
 
+        if (!preview) {
+            return;
+        }
+
         cameraCapture = new CameraCapture(preview, takePhoto);
 
         await cameraCapture.start();
 
         takePhoto?.addEventListener("click", async () => {
-            const blob: Blob = await cameraCapture.takePhoto();
+            const blob: Blob = await cameraCapture!.takePhoto();
             await game?.sendImage(blob);
         });
     });

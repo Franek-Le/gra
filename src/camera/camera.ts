@@ -22,7 +22,7 @@ export class CameraCapture {
     private stream: MediaStream | null = null;
     private track: MediaStreamTrack | null = null;
     private readonly video: HTMLVideoElement;
-    private readonly button?: HTMLButtonElement;
+    private readonly button: HTMLButtonElement | null;
     private readonly profile: CameraProfile;
 
     constructor(video: HTMLVideoElement, button: HTMLButtonElement | null, profile: CameraProfile = {}) {
