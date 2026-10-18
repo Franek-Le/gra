@@ -105,17 +105,26 @@ button?.addEventListener("click", async () => {
         const takePhoto = document.querySelector<HTMLButtonElement>("#takePhoto");
         const preview = document.querySelector<HTMLVideoElement>("#preview")
 
-
         if (!preview) {
             return;
         }
 
-        cameraCapture = new CameraCapture(preview, takePhoto);
+        cameraCapture = new CameraCapture(preview, takePhoto, {
+            shutterSeconds: 1/250
+        });
 
         await cameraCapture.start();
 
         takePhoto?.addEventListener("click", async () => {
+            const started = performance.now();
             const blob: Blob = await cameraCapture!.takePhoto();
+
+            console.log({
+                encodeMs: Math.round(performance.now() - started),
+                sizeKB: Number((blob.size / 1024).toFixed(1)),
+                format: blob.type,
+            })
+
             await game?.sendImage(blob);
         });
     });

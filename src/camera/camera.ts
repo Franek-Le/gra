@@ -14,6 +14,7 @@ type CameraCapabilities = {
     exposureCompensation?: NumericRange;
 };
 
+//@ts-ignore
 type ImageCaptureWindow = Window & {
     ImageCapture?: new (track: MediaStreamTrack) => { takePhoto(): Promise<Blob> };
 };
@@ -70,22 +71,12 @@ export class CameraCapture {
         if (this.button) this.button.disabled = true;
 
         try {
-            const ImageCaptureCtor = (window as ImageCaptureWindow).ImageCapture;
-
-            if (ImageCaptureCtor) {
-                try {
-                    const blob = await new ImageCaptureCtor(this.track).takePhoto();
-                    return await this.asCompressedImage(blob);
-                } catch {
-                    // Fall back to capturing the current video frame.
-                }
-            }
-
             return await this.capturePreviewAsCompressedImage();
         } finally {
             if (this.button) this.button.disabled = wasButtonDisabled || !this.stream;
         }
     }
+
 
     stop(): void {
         this.stream?.getTracks().forEach(track => track.stop());
@@ -158,6 +149,7 @@ export class CameraCapture {
         return Math.max(range.min, Math.min(range.max, value));
     }
 
+    //@ts-ignore
     private async asCompressedImage(blob: Blob): Promise<Blob> {
         const bitmap = await createImageBitmap(blob);
 
@@ -177,19 +169,30 @@ export class CameraCapture {
     }
 
     private async capturePreviewAsCompressedImage(): Promise<Blob> {
-        if (!this.video.videoWidth || !this.video.videoHeight) {
+        const sourceWidth = this.video.videoWidth;
+        const sourceHeight = this.video.videoHeight;
+
+        if (!sourceWidth || !sourceHeight) {
             throw new Error("Camera preview is not ready.");
         }
 
+        const scale = Math.min(1, 640 / Math.max(sourceWidth, sourceHeight));
         const canvas = document.createElement("canvas");
-        canvas.width = this.video.videoWidth;
-        canvas.height = this.video.videoHeight;
+        canvas.width = Math.max(1, Math.round(sourceWidth * scale));
+        canvas.height = Math.max(1, Math.round(sourceHeight * scale));
 
         const context = canvas.getContext("2d");
         if (!context) throw new Error("Could not create image canvas.");
 
         context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
-        return this.canvasToBestFormat(canvas);
+
+        const avif = await this.canvasToBlob(canvas, "image/avif", 0.4);
+        if (avif.type.toLowerCase() === "image/avif") return avif;
+
+        const webp = await this.canvasToBlob(canvas, "image/webp", 0.55);
+        if (webp.type.toLowerCase() === "image/webp") return webp;
+
+        return this.canvasToBlob(canvas, "image/jpeg", 0.7);
     }
 
     private async canvasToBestFormat(source: HTMLCanvasElement): Promise<Blob> {
