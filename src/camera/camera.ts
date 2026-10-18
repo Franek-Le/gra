@@ -75,13 +75,13 @@ export class CameraCapture {
             if (ImageCaptureCtor) {
                 try {
                     const blob = await new ImageCaptureCtor(this.track).takePhoto();
-                    return await this.asJpeg(blob);
+                    return await this.asCompressedImage(blob);
                 } catch {
                     // Fall back to capturing the current video frame.
                 }
             }
 
-            return await this.capturePreviewAsJpeg();
+            return await this.capturePreviewAsCompressedImage();
         } finally {
             if (this.button) this.button.disabled = wasButtonDisabled || !this.stream;
         }
@@ -158,27 +158,25 @@ export class CameraCapture {
         return Math.max(range.min, Math.min(range.max, value));
     }
 
-    private async asJpeg(blob: Blob): Promise<Blob> {
-        if (blob.type.toLowerCase() === "image/jpeg") return blob;
-
+    private async asCompressedImage(blob: Blob): Promise<Blob> {
         const bitmap = await createImageBitmap(blob);
-        const canvas = document.createElement("canvas");
-        canvas.width = bitmap.width;
-        canvas.height = bitmap.height;
 
-        const context = canvas.getContext("2d");
-        if (!context) {
+        try {
+            const canvas = document.createElement("canvas");
+            canvas.width = bitmap.width;
+            canvas.height = bitmap.height;
+
+            const context = canvas.getContext("2d");
+            if (!context) throw new Error("Could not create image canvas.");
+
+            context.drawImage(bitmap, 0, 0);
+            return await this.canvasToBestFormat(canvas);
+        } finally {
             bitmap.close();
-            throw new Error("Could not create image canvas.");
         }
-
-        context.drawImage(bitmap, 0, 0);
-        bitmap.close();
-
-        return this.canvasToJpeg(canvas);
     }
 
-    private async capturePreviewAsJpeg(): Promise<Blob> {
+    private async capturePreviewAsCompressedImage(): Promise<Blob> {
         if (!this.video.videoWidth || !this.video.videoHeight) {
             throw new Error("Camera preview is not ready.");
         }
@@ -191,15 +189,42 @@ export class CameraCapture {
         if (!context) throw new Error("Could not create image canvas.");
 
         context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
-        return this.canvasToJpeg(canvas);
+        return this.canvasToBestFormat(canvas);
     }
 
-    private canvasToJpeg(canvas: HTMLCanvasElement): Promise<Blob> {
+    private async canvasToBestFormat(source: HTMLCanvasElement): Promise<Blob> {
+        // YOLO ultimately resizes the image to 640x640.
+        // Limit the transmitted image to 1280 pixels on its longest side.
+        const scale = Math.min(1, 1280 / source.width, 1280 / source.height);
+
+        let canvas = source;
+
+        if (scale < 1) {
+            canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(source.width * scale));
+            canvas.height = Math.max(1, Math.round(source.height * scale));
+
+            const context = canvas.getContext("2d");
+            if (!context) throw new Error("Could not create resized image canvas.");
+
+            context.drawImage(source, 0, 0, canvas.width, canvas.height);
+        }
+
+        const avif = await this.canvasToBlob(canvas, "image/avif", 0.65);
+        if (avif.type.toLowerCase() === "image/avif") return avif;
+
+        const webp = await this.canvasToBlob(canvas, "image/webp", 0.75);
+        if (webp.type.toLowerCase() === "image/webp") return webp;
+
+        return this.canvasToBlob(canvas, "image/jpeg", 0.82);
+    }
+
+    private canvasToBlob(canvas: HTMLCanvasElement, type: string, quality: number): Promise<Blob> {
         return new Promise((resolve, reject) => {
             canvas.toBlob(
-                blob => blob ? resolve(blob) : reject(new Error("JPEG encoding failed.")),
-                "image/jpeg",
-                0.85
+                blob => blob ? resolve(blob) : reject(new Error(`${type} encoding failed.`)),
+                type,
+                quality
             );
         });
     }
