@@ -27,6 +27,7 @@ export const AdminLobbyView = {
     <div class="card" id="main">
         <div class="title">Lobby</div>
         <div class="player-list" id="player-list"></div>
+        <input type="number" class="input" id="duration-input" placeholder="Długość gry (minuty)">
         <button id="start" class="button">Start</button>
     </div>
     `
@@ -38,6 +39,17 @@ export const GameView = {
         <div class="title">Gra</div>
         <video id="preview" autoplay muted playsinline></video>
         <button id="takePhoto" disabled>Take photo</button>
+    </div>
+    `
+} as View;
+
+export const AdminGameView = {
+    body: `
+    <div class="card" id="main">
+        <div class="title">Gra</div>
+        <video id="preview" autoplay muted playsinline></video>
+        <button id="takePhoto" disabled>Take photo</button>
+        <button id="end" class="button">Zakończ</button>
     </div>
     `
 } as View;

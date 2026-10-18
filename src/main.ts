@@ -1,8 +1,8 @@
 import { Game } from "./game/game.ts";
 import  { CameraCapture } from "./camera/camera.ts";
-import { AdminLobbyView, GameEndView, GameView, LobbyView, setView } from "./view/view.ts";
+import { AdminGameView, AdminLobbyView, GameEndView, GameView, LobbyView, setView } from "./view/view.ts";
 import { notify } from "./notification/notification.ts";
-import type { u8 } from "./types/integers.ts";
+import { u8 } from "./types/integers.ts";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 const button = document.querySelector<HTMLButtonElement>("#join");
@@ -90,10 +90,21 @@ button?.addEventListener("click", async () => {
     });
 
     game.onGameStart.subscribe(async () => {
-        setView(app!, GameView);
+        if (username === "Franek") {
+            setView(app!, AdminGameView);
+
+            const end = document.querySelector<HTMLButtonElement>("#end");
+
+            end?.addEventListener("click", () => {
+                game?.endGame();
+            })
+        } else {
+            setView(app!, GameView);
+        }
 
         const takePhoto = document.querySelector<HTMLButtonElement>("#takePhoto");
         const preview = document.querySelector<HTMLVideoElement>("#preview")
+
 
         if (!preview) {
             return;
@@ -150,9 +161,10 @@ button?.addEventListener("click", async () => {
         setView(app!, AdminLobbyView);
 
         const start = document.querySelector<HTMLButtonElement>("#start");
+        const duration = document.querySelector<HTMLInputElement>("#duration-input");
 
         start?.addEventListener("click", () => {
-            game?.startGame();
+            game?.startGame(duration !== null ? u8(Number(duration.value)) : u8(10));
         });
     } else {
         setView(app!, LobbyView);

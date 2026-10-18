@@ -66,8 +66,15 @@ export class Game {
         this.player.disconnect();
     }
 
-    public startGame() {
-        const packet: Packet = this.packetManager.createPacket(u8(0x02), {});
+    public startGame(duration: u8) {
+        const packet: Packet = this.packetManager.createPacket(u8(0x02), {
+            duration: duration
+        });
+        this.client.send(packet);
+    }
+
+    public endGame() {
+        const packet: Packet = this.packetManager.createPacket(u8(0x04), {});
         this.client.send(packet);
     }
 

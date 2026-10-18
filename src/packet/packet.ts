@@ -14,13 +14,17 @@ export type ConnectPacketData = {
 
 export type DisconnectPacketData = {};
 
-export type StartPacketData = {};
+export type StartPacketData = {
+    duration: u8
+};
+
+export type EndPacketData = {}
 
 export type ImagePacketData = {
     data: Uint8Array,
 };
 
-export type PacketData = ConnectPacketData | DisconnectPacketData | StartPacketData | ImagePacketData;
+export type PacketData = ConnectPacketData | DisconnectPacketData | StartPacketData | ImagePacketData | EndPacketData;
 
 export type Packet = {
     version: u8;

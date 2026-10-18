@@ -1,4 +1,4 @@
-import type { Packet, PacketData, ConnectPacketData, ImagePacketData } from "./packet.ts";
+import type { Packet, PacketData, ConnectPacketData, ImagePacketData, StartPacketData } from "./packet.ts";
 import { i32, type u8 } from "../types/integers.js";
 import { Buffer } from "../buffer/buffer.js";
 
@@ -26,11 +26,16 @@ export class PacketSerializer {
                 break;
 
             case 0x02:
+                const startPacketData: StartPacketData = payload as StartPacketData;
+                buffer.writeU8(startPacketData.duration);
                 break;
 
             case 0x03:
                 const imagePacketData: ImagePacketData = payload as ImagePacketData;
                 buffer.writeImage(imagePacketData.data);
+                break;
+
+            case 0x04:
                 break;
         }
     }
