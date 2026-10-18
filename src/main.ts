@@ -113,7 +113,7 @@ button?.addEventListener("click", async () => {
             exposureMode: "manual",
             iso: 3200,
             shutterSeconds: 0.004,
-            exposureCompensation: 0
+            exposureCompensation: 2
         });
 
         await cameraCapture.start();
