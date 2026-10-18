@@ -138,7 +138,7 @@ button?.addEventListener("click", async () => {
         if (success) {
             notify("+2 punkty", "success", 5000)
         } else {
-            notify("Nie znaleziono gracza na zdjęciu", "error", 5000)
+            notify("Nie znaleziono gracza na zdjęciu, lub nie skończył się cooldown", "error", 5000)
         }
     })
 
