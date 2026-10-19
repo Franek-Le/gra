@@ -38,7 +38,7 @@ export const GameView = {
     <div class="card" id="main">
         <div class="title">Gra</div>
         <video id="preview" autoplay muted playsinline></video>
-        <button id="takePhoto" disabled>Take photo</button>
+        <button id="takePhoto" class="button" disabled>Zrób zdjęcie</button>
     </div>
     `
 } as View;
@@ -48,7 +48,7 @@ export const AdminGameView = {
     <div class="card" id="main">
         <div class="title">Gra</div>
         <video id="preview" autoplay muted playsinline></video>
-        <button id="takePhoto" disabled>Take photo</button>
+        <button id="takePhoto" class="button" disabled>Zrób zdjęcie</button>
         <button id="end" class="button">Zakończ</button>
     </div>
     `
