@@ -109,11 +109,7 @@ button?.addEventListener("click", async () => {
             return;
         }
 
-        cameraCapture = new CameraCapture(preview, takePhoto, {
-            exposureMode: "manual",
-            iso: 3200,
-            exposureCompensation: 1
-        });
+        cameraCapture = new CameraCapture(preview, takePhoto);
 
         await cameraCapture.start();
 
